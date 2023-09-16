@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { PieChart, pieArcClasses } from '@mui/x-charts/PieChart';
 import SideNavBar from '../Components/SideNavBar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const data = [
   { id: 0, value: 10, label: 'series A' },
@@ -29,6 +31,7 @@ export default function DashBoard() {
       height={200}
     />
     </div>
+    <ToastContainer />
     </>
     
   );

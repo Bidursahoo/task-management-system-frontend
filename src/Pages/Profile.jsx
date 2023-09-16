@@ -10,7 +10,8 @@ import CardOverflow from '@mui/joy/CardOverflow';
 import CardActions from '@mui/joy/CardActions';
 import Typography from '@mui/joy/Typography';
 import SideNavBar from '../Components/SideNavBar';
-
+import { ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 export default function Profile() {
   return (
     <>
@@ -65,6 +66,7 @@ export default function Profile() {
       </CardOverflow>
     </Card>
     </div>
+    <ToastContainer />
     </>
   );
 }
