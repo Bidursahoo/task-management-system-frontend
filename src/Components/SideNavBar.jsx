@@ -123,7 +123,9 @@ export default function SideNavBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" onClick={()=>{
+            navigate("/")
+          }}>
             Task Management System
           </Typography>
         </Toolbar>

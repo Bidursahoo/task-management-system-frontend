@@ -12,18 +12,60 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { ToastContainer, toast } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
-// TODO remove, this demo shouldn't need to reset the theme.
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
+  const navigate = useNavigate();
+  const [fullName , setFullName] = React.useState({
+    fname: "",
+    lname:""
+  })
+  const [userData , setUserData] = React.useState({
+    name: fullName.fname + " " +fullName.lname,
+    email: '',
+    password: '',
+  });
+  const handleFullName = (event) =>{
+    const { name, value } = event.target;
+    setFullName({
+      ...fullName,
+      [name]: value
+    })
+  }
+  const handleOnChange= (event)=>{
+    const { name, value } = event.target;
+    setUserData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));
+  }
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    axios.post("https://task-management-backend-czfb.onrender.com/api/users" , {
+      ...userData,
+      name: fullName.fname + " " + fullName.lname,
+    }).then((res)=>{
+      // console.log(res)
+      if(res.status === 200){
+        toast.success(res.data.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          });
+          setTimeout(()=> {
+            navigate("/login")
+           }, 2000);
+      }
+    })
+    
   };
 
   return (
@@ -49,12 +91,13 @@ export default function SignUp() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name="fname"
                   required
                   fullWidth
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={handleFullName}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -63,8 +106,9 @@ export default function SignUp() {
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  name="lastName"
+                  name="lname"
                   autoComplete="family-name"
+                  onChange={handleFullName}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -75,6 +119,7 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={handleOnChange}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -86,6 +131,7 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={handleOnChange}
                 />
               </Grid>
             </Grid>
